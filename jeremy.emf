@@ -1,0 +1,11 @@
+; -!- emf -!-
+
+;global-bind-key beginning-of-line       "home"
+;global-bind-key end-of-line             "end"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Change the home directory on Windows and DOS.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+!if &or &seq $platform "dos" &seq $platform "win32"
+    set-variable $home "c:/Users/Jeremy"
+!endif
