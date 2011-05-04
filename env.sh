@@ -1,0 +1,2 @@
+export MEBACKUPPATH=$HOME/.backups/
+
