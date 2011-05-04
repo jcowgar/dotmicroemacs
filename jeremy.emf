@@ -9,3 +9,11 @@
 !if &or &seq $platform "dos" &seq $platform "win32"
     set-variable $home "c:/Users/Jeremy"
 !endif
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Additional file hooks
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+add-file-hook ".go" fhook-go
