@@ -95,7 +95,6 @@ set-variable .fhook-go.item-list-r1 "\\1 \ecB\\2\ecA"
     ;hilight .hilight.go  1 "append" .scheme.function
     ;hilight .hilight.go  1 "cap" .scheme.function
     ;hilight .hilight.go  1 "close" .scheme.function
-    ;hilight .hilight.go  1 "closed" .scheme.function
     ;hilight .hilight.go  1 "complex" .scheme.function
     ;hilight .hilight.go  1 "copy" .scheme.function
     ;hilight .hilight.go  1 "imag" .scheme.function
