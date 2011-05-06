@@ -43,6 +43,9 @@ set-variable .fhook-go.item-list-r1 "\\1 \ecB\\2\ecA"
     hilight .hilight.go  4 "'" "'" "\\"          .scheme.string
     hilight .hilight.go  4 "`" "`" ""            .scheme.string
     
+    hilight .hilight.go  20 "/\\*\\s*TODO" "*/" "" .scheme.error
+    hilight .hilight.go  18 "//\\s*TODO"           .scheme.error
+    
     hilight .hilight.go  1 "break" .scheme.keyword
     hilight .hilight.go  1 "case" .scheme.keyword
     hilight .hilight.go  1 "const" .scheme.keyword
@@ -130,7 +133,7 @@ set-variable .fhook-go.item-list-r1 "\\1 \ecB\\2\ecA"
     indent .hilight.go o ")" -t
     indent .hilight.go n "\\[" t
     indent .hilight.go o "\\]" -t
-    indent .hilight.go s "case.+:" -t
+    indent .hilight.go s "case[^:]+:" -t
     indent .hilight.go s "default[ \t]*:" -t
 !endif
 
