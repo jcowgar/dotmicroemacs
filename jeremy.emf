@@ -75,7 +75,7 @@ define-macro align-char
 define-macro align-current-char
     set-variable #l0 @wc
     set-variable #l1 $window-acol
-    
+
     align-char
 !emacro
 
@@ -137,7 +137,7 @@ define-macro spotless
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-; #l0 should contain the value to convert to seconds. #l0 will contain the 
+; #l0 should contain the value to convert to seconds. #l0 will contain the
 ; result
 define-macro time-to-seconds
     set-variable #p0 &add &mid #p0 16 2 &mul 60 &add &mid #p0 14 2 &mul 60 &mid #p0 12 2
@@ -151,7 +151,7 @@ define-macro human-time-diff
     set-variable #l2 0            ; hour count
     set-variable #l3 0            ; minute count
     set-variable #l4 0            ; second count
-    
+
     !if &great #l0 86400
         set-variable #l1 &div #l0 86000
         set-variable #l0 &sub #l0 &mul 86000 #l1
@@ -165,9 +165,9 @@ define-macro human-time-diff
         set-variable #l0 &sub #l0 &mul 60 #l3
     !endif
     set-variable #l4 #l0
-    
+
     !if &great #l1 0
-        set-variable #p0 &spr "%d day %d hour %d min %d sec" #l1 #l2 #l3 #l4 
+        set-variable #p0 &spr "%d day %d hour %d min %d sec" #l1 #l2 #l3 #l4
     !elif &great #l2 0
         set-variable #p0 &spr "%d hour %d min %d sec" #l2 #l3 #l4
     !elif &great #l3 0
@@ -185,12 +185,12 @@ define-macro timer-status
     set-variable #l0 $time
     time-to-seconds
     set-variable #l1 #l0
-    
+
     set-variable #l0 $timer-started-at
     time-to-seconds
-    
+
     human-time-diff
-    
+
     ml-write &spr "Elapsed time: %s" #l0
 !emacro
 
