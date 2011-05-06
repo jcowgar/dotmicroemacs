@@ -17,27 +17,30 @@ add-file-hook ".go" fhook-go
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
+; Helper Methods
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+define-macro spotless
+    -1 clean
+!emacro
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
 ; Task Timer
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-define-macro timer-begin
-    set-variable $timer-started-at $time
+; #l0 should contain the value to convert to seconds. #l0 will contain the 
+; result
+define-macro time-to-seconds
+    set-variable #p0 &add &mid #p0 16 2 &mul 60 &add &mid #p0 14 2 &mul 60 &mid #p0 12 2
 !emacro
 
-define-macro timer-status
-    set-variable #l0 $timer-started-at
-    set-variable #l1 $time
-    
-    set-variable #l2 &add &mid #l0 16 2 &mul 60 &add &mid #l0 14 2 &mul 60 &mid #l0 12 2 
-    set-variable #l3 &add &mid #l1 16 2 &mul 60 &add &mid #l1 14 2 &mul 60 &mid #l1 12 2 
-    
-    !if &les &set #l4 &sub &rig #l1 18 &rig #l0 18 0 
-        set-variable #l2 &add #l2 1 
-        set-variable #l4 &add 1000 #l4 
-    !endif
-    
-    set-variable #l0 &sub #l3 #l2 ; difference in seconds
+; #l0 and #l1 should contain the start -> end time. #l0 will have the human
+; time difference.
+define-macro human-time-diff
+    set-variable #l0 &sub #p1 #p0 ; difference in seconds
     set-variable #l1 0            ; day count
     set-variable #l2 0            ; hour count
     set-variable #l3 0            ; minute count
@@ -58,14 +61,31 @@ define-macro timer-status
     set-variable #l4 #l0
     
     !if &great #l1 0
-        ml-write &spr "%d day %d hour %d min %d sec" #l1 #l2 #l3 #l4 
+        set-variable #p0 &spr "%d day %d hour %d min %d sec" #l1 #l2 #l3 #l4 
     !elif &great #l2 0
-        ml-write &spr "%d hour %d min %d sec" #l2 #l3 #l4
+        set-variable #p0 &spr "%d hour %d min %d sec" #l2 #l3 #l4
     !elif &great #l3 0
-        ml-write &spr "%d min %d sec" #l3 #l4
+        set-variable #p0 &spr "%d min %d sec" #l3 #l4
     !else
-        ml-write &spr "%d sec" #l4
+        set-variable #p0 &spr "%d sec" #l4
     !endif
+!emacro
+
+define-macro timer-begin
+    set-variable $timer-started-at $time
+!emacro
+
+define-macro timer-status
+    set-variable #l0 $time
+    time-to-seconds
+    set-variable #l1 #l0
+    
+    set-variable #l0 $timer-started-at
+    time-to-seconds
+    
+    human-time-diff
+    
+    ml-write &spr "Elapsed time: %s" #l0
 !emacro
 
 global-bind-key alarm        "C-c a"
