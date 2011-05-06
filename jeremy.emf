@@ -180,6 +180,39 @@ define-macro smart-home
     !end
 !emacro
 
+; Delete from the current position to the character give via the user prompt
+define-macro forward-delete-to
+    ml-write "Delete to: "
+    
+    set-variable #l0 @cgk
+    
+    !if &seq #l0 "C-g"
+        ml-write "Cancelled"
+    !else
+        !while &not &seq @wc #l0
+            forward-delete-char
+        !done
+    !end
+!emacro
+
+; Delete from the current position to the character given via the user prompt
+define-macro backward-delete-to
+    ml-write "Backward delete to: "
+    
+    set-variable #l0 @cgk
+    
+    !if &seq #l0 "C-g"
+        ml-write "Cancelled"
+    !else
+        backward-char
+    
+        !while &not &seq @wc #l0
+            forward-delete-char
+            backward-char
+        !done
+    !end
+!emacro
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
 ; Task Timer
@@ -243,12 +276,14 @@ define-macro timer-status
     ml-write &spr "Elapsed time: %s" #l0
 !emacro
 
-global-bind-key    alarm             "C-c a"
-global-bind-key    timer-begin       "C-c b"
-global-bind-key    timer-status      "C-c s"
-global-bind-key    super-backspace   "C-backspace"
-global-bind-key    super-delete      "C-delete"
--1 global-bind-key next-buffer       "A-left"
-global-bind-key    next-buffer       "A-right"
-global-bind-key    autocomplete-word "C-."
-global-bind-key    smart-home        "home"
+global-bind-key    alarm              "C-c a"
+global-bind-key    timer-begin        "C-c b"
+global-bind-key    timer-status       "C-c s"
+global-bind-key    super-backspace    "C-backspace"
+global-bind-key    super-delete       "C-delete"
+-1 global-bind-key next-buffer        "A-left"
+global-bind-key    next-buffer        "A-right"
+global-bind-key    autocomplete-word  "C-."
+global-bind-key    smart-home         "home"
+global-bind-key    forward-delete-to  "esc delete"
+global-bind-key    backward-delete-to "esc backspace"
