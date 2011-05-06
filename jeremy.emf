@@ -134,22 +134,15 @@ define-macro spotless
 ; Go to the first non-blank character on the current line. If already there,
 ; go to column 1
 define-macro smart-home
-    set-variable #l1 $window-acol
+    set-variable #l0 $window-acol
     
     beginning-of-line
     
-    !repeat
+    !while &sin @wc " \t"
         !force forward-char
-        !if $status
-            !if &not &sin @wc " \t"
-                set-variable #l0 1
-            !endif
-        !else
-            set-variable #l0 1
-        !endif
-    !until #l0
+    !done
     
-    !if &equal $window-acol #l1
+    !if &equal $window-acol #l0
         beginning-of-line
     !end
 !emacro
