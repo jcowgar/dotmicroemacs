@@ -13,13 +13,16 @@ define-macro fhook-go
     set-variable $buffer-mask "luh1"
     @# buffer-init "go"
     buffer-init-hooks
+    
+    ; Go standard is indent with tabs
+    -1 buffer-mode "tab"
 !emacro
 
 ; buffer-init variables
 set-variable .fhook-go.setup &reg "/history/fhook/go" "bdfghnopxlqv"
 set-variable .fhook-go.setup-mask "abdefghikmnoptuxclqrvy"
-set-variable .fhook-go.comment "|/*| */|*| * | * |fr|"
-set-variable .fhook-go.comment-1 "|//||//|// | //|r|"
+set-variable .fhook-go.comment    "|/*| */|*| * | * |fr|"
+set-variable .fhook-go.comment-1  "|//||//|// | //|r|"
 set-variable .fhook-go.indent-width 4
 
 ; Setup collapse
@@ -37,90 +40,90 @@ set-variable .fhook-go.item-list-r1 "\\1 \ecB\\2\ecA"
 !if &and &sin "h" .fhook-go.setup &band .hilight.flags 0x02
     0 hilight .hilight.go 1 $global-scheme
     
-    hilight .hilight.go  2 "//"                  .scheme.comment
-    hilight .hilight.go 20 "/\\*" "*/" ""        .scheme.comment
-    hilight .hilight.go  4 "\"" "\"" "\\"        .scheme.string
-    hilight .hilight.go  4 "'" "'" "\\"          .scheme.string
-    hilight .hilight.go  4 "`" "`" ""            .scheme.string
+    hilight .hilight.go  2 "//"                    .scheme.comment
+    hilight .hilight.go 20 "/\\*" "*/" ""          .scheme.comment
+    hilight .hilight.go  4 "\"" "\"" "\\"          .scheme.string
+    hilight .hilight.go  4 "'" "'" "\\"            .scheme.string
+    hilight .hilight.go  4 "`" "`" ""              .scheme.string
     
     hilight .hilight.go  20 "/\\*\\s*TODO" "*/" "" .scheme.error
     hilight .hilight.go  18 "//\\s*TODO"           .scheme.error
     
-    hilight .hilight.go  1 "break" .scheme.keyword
-    hilight .hilight.go  1 "case" .scheme.keyword
-    hilight .hilight.go  1 "const" .scheme.keyword
-    hilight .hilight.go  1 "continue" .scheme.keyword
-    hilight .hilight.go  1 "default" .scheme.keyword
-    hilight .hilight.go  1 "defer" .scheme.keyword
-    hilight .hilight.go  1 "else" .scheme.keyword
-    hilight .hilight.go  1 "fallthrough" .scheme.keyword
-    hilight .hilight.go  1 "false" .scheme.keyword
-    hilight .hilight.go  1 "for" .scheme.keyword
-    hilight .hilight.go  1 "func" .scheme.keyword
-    hilight .hilight.go  1 "go" .scheme.keyword
-    hilight .hilight.go  1 "goto" .scheme.keyword
-    hilight .hilight.go  1 "if" .scheme.keyword
-    hilight .hilight.go  1 "import" .scheme.keyword
-    hilight .hilight.go  1 "interface" .scheme.keyword
-    hilight .hilight.go  1 "iota" .scheme.keyword
-    hilight .hilight.go  1 "nil" .scheme.keyword
-    hilight .hilight.go  1 "package" .scheme.keyword
-    hilight .hilight.go  1 "range" .scheme.keyword
-    hilight .hilight.go  1 "return" .scheme.keyword
-    hilight .hilight.go  1 "select" .scheme.keyword
-    hilight .hilight.go  1 "struct" .scheme.keyword
-    hilight .hilight.go  1 "switch" .scheme.keyword
-    hilight .hilight.go  1 "true" .scheme.keyword
-    hilight .hilight.go  1 "type" .scheme.keyword
-    hilight .hilight.go  1 "var" .scheme.keyword
+    hilight .hilight.go  1 "break"                 .scheme.keyword
+    hilight .hilight.go  1 "case"                  .scheme.keyword
+    hilight .hilight.go  1 "const"                 .scheme.keyword
+    hilight .hilight.go  1 "continue"              .scheme.keyword
+    hilight .hilight.go  1 "default"               .scheme.keyword
+    hilight .hilight.go  1 "defer"                 .scheme.keyword
+    hilight .hilight.go  1 "else"                  .scheme.keyword
+    hilight .hilight.go  1 "fallthrough"           .scheme.keyword
+    hilight .hilight.go  1 "false"                 .scheme.keyword
+    hilight .hilight.go  1 "for"                   .scheme.keyword
+    hilight .hilight.go  1 "func"                  .scheme.keyword
+    hilight .hilight.go  1 "go"                    .scheme.keyword
+    hilight .hilight.go  1 "goto"                  .scheme.keyword
+    hilight .hilight.go  1 "if"                    .scheme.keyword
+    hilight .hilight.go  1 "import"                .scheme.keyword
+    hilight .hilight.go  1 "interface"             .scheme.keyword
+    hilight .hilight.go  1 "iota"                  .scheme.keyword
+    hilight .hilight.go  1 "nil"                   .scheme.keyword
+    hilight .hilight.go  1 "package"               .scheme.keyword
+    hilight .hilight.go  1 "range"                 .scheme.keyword
+    hilight .hilight.go  1 "return"                .scheme.keyword
+    hilight .hilight.go  1 "select"                .scheme.keyword
+    hilight .hilight.go  1 "struct"                .scheme.keyword
+    hilight .hilight.go  1 "switch"                .scheme.keyword
+    hilight .hilight.go  1 "true"                  .scheme.keyword
+    hilight .hilight.go  1 "type"                  .scheme.keyword
+    hilight .hilight.go  1 "var"                   .scheme.keyword
     
-    hilight .hilight.go  1 "bool" .scheme.type
-    hilight .hilight.go  1 "byte" .scheme.type
-    hilight .hilight.go  1 "chan" .scheme.type
-    hilight .hilight.go  1 "complex64" .scheme.type
-    hilight .hilight.go  1 "complex128" .scheme.type
-    hilight .hilight.go  1 "float32" .scheme.type
-    hilight .hilight.go  1 "float64" .scheme.type
-    hilight .hilight.go  1 "int" .scheme.type
-    hilight .hilight.go  1 "int8" .scheme.type
-    hilight .hilight.go  1 "int16" .scheme.type
-    hilight .hilight.go  1 "int32" .scheme.type
-    hilight .hilight.go  1 "int64" .scheme.type
-    hilight .hilight.go  1 "map" .scheme.type
-    hilight .hilight.go  1 "string" .scheme.type
-    hilight .hilight.go  1 "uint" .scheme.type
-    hilight .hilight.go  1 "uintptr" .scheme.type
-    hilight .hilight.go  1 "uint8" .scheme.type
-    hilight .hilight.go  1 "uint16" .scheme.type
-    hilight .hilight.go  1 "uint32" .scheme.type
-    hilight .hilight.go  1 "uint64" .scheme.type
+    hilight .hilight.go  1 "bool"                  .scheme.type
+    hilight .hilight.go  1 "byte"                  .scheme.type
+    hilight .hilight.go  1 "chan"                  .scheme.type
+    hilight .hilight.go  1 "complex64"             .scheme.type
+    hilight .hilight.go  1 "complex128"            .scheme.type
+    hilight .hilight.go  1 "float32"               .scheme.type
+    hilight .hilight.go  1 "float64"               .scheme.type
+    hilight .hilight.go  1 "int"                   .scheme.type
+    hilight .hilight.go  1 "int8"                  .scheme.type
+    hilight .hilight.go  1 "int16"                 .scheme.type
+    hilight .hilight.go  1 "int32"                 .scheme.type
+    hilight .hilight.go  1 "int64"                 .scheme.type
+    hilight .hilight.go  1 "map"                   .scheme.type
+    hilight .hilight.go  1 "string"                .scheme.type
+    hilight .hilight.go  1 "uint"                  .scheme.type
+    hilight .hilight.go  1 "uintptr"               .scheme.type
+    hilight .hilight.go  1 "uint8"                 .scheme.type
+    hilight .hilight.go  1 "uint16"                .scheme.type
+    hilight .hilight.go  1 "uint32"                .scheme.type
+    hilight .hilight.go  1 "uint64"                .scheme.type
     
-    ;hilight .hilight.go  1 "append" .scheme.function
-    ;hilight .hilight.go  1 "cap" .scheme.function
-    ;hilight .hilight.go  1 "close" .scheme.function
-    ;hilight .hilight.go  1 "complex" .scheme.function
-    ;hilight .hilight.go  1 "copy" .scheme.function
-    ;hilight .hilight.go  1 "imag" .scheme.function
-    ;hilight .hilight.go  1 "len" .scheme.function
-    ;hilight .hilight.go  1 "make" .scheme.function
-    ;hilight .hilight.go  1 "new" .scheme.function
-    ;hilight .hilight.go  1 "panic" .scheme.function
-    ;hilight .hilight.go  1 "print" .scheme.function
-    ;hilight .hilight.go  1 "println" .scheme.function
-    ;hilight .hilight.go  1 "real" .scheme.function
-    ;hilight .hilight.go  1 "recover" .scheme.function
+    ;hilight .hilight.go  1 "append"                .scheme.function
+    ;hilight .hilight.go  1 "cap"                   .scheme.function
+    ;hilight .hilight.go  1 "close"                 .scheme.function
+    ;hilight .hilight.go  1 "complex"               .scheme.function
+    ;hilight .hilight.go  1 "copy"                  .scheme.function
+    ;hilight .hilight.go  1 "imag"                  .scheme.function
+    ;hilight .hilight.go  1 "len"                   .scheme.function
+    ;hilight .hilight.go  1 "make"                  .scheme.function
+    ;hilight .hilight.go  1 "new"                   .scheme.function
+    ;hilight .hilight.go  1 "panic"                 .scheme.function
+    ;hilight .hilight.go  1 "print"                 .scheme.function
+    ;hilight .hilight.go  1 "println"               .scheme.function
+    ;hilight .hilight.go  1 "real"                  .scheme.function
+    ;hilight .hilight.go  1 "recover"               .scheme.function
     
     !if &band .hilight.flags 0x08
         ; hilight consts, e.g. numbers
-        hilight .hilight.go 1 "\\d+"             .scheme.constant
-        hilight .hilight.go 1 "-\\d+"            .scheme.constant
-        hilight .hilight.go 1 "\\d+\\.\\d+"      .scheme.constant
-        hilight .hilight.go 1 "-\\d+\\.\\d+"     .scheme.constant
-        hilight .hilight.go 1 "\\d+[Ee]\\d+"     .scheme.constant
-        hilight .hilight.go 1 "0x[0-9a-f]+"      .scheme.constant
-        hilight .hilight.go 1 "0o[0-7]+"         .scheme.constant
+        hilight .hilight.go 1 "\\d+"               .scheme.constant
+        hilight .hilight.go 1 "-\\d+"              .scheme.constant
+        hilight .hilight.go 1 "\\d+\\.\\d+"        .scheme.constant
+        hilight .hilight.go 1 "-\\d+\\.\\d+"       .scheme.constant
+        hilight .hilight.go 1 "\\d+[Ee]\\d+"       .scheme.constant
+        hilight .hilight.go 1 "0x[0-9a-f]+"        .scheme.constant
+        hilight .hilight.go 1 "0o[0-7]+"           .scheme.constant
         
-        hilight .hilight.go 1 "[A-Z_][A-Z0-9_]*" .scheme.constant
+        hilight .hilight.go 1 "[A-Z_][A-Z0-9_]*"   .scheme.constant
     !endif
 !endif
 
