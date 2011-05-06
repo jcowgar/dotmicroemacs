@@ -21,6 +21,112 @@ add-file-hook ".go" fhook-go
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+; Align all subsequent lines containing #l0 to column #l1
+define-macro align-char
+    set-variable .TheChar   #p0
+    set-variable .TheColumn #p1
+
+*nextline
+    forward-line
+
+    !if &or &xsequal @wl "^[ \t]*$" &xsequal @wl "^[ \t]*//.*$"
+        !goto nextline
+    !endif
+
+    !if &not &xsequal @wl &cat &cat ".*" .TheChar ".*"
+        !goto finish
+    !endif
+
+    beginning-of-line
+    !while &not &sin @wc .TheChar
+        forward-char
+    !done
+
+    !if &equal .TheColumn $window-acol
+        !goto nextline
+    !endif
+
+    !if &less $window-acol .TheColumn
+        !while &less $window-acol .TheColumn
+            insert-space
+        !done
+        !goto nextline
+    !endif
+
+    !if &great $window-acol .TheColumn
+        !while &great $window-acol .TheColumn
+            backward-char
+            !if &not &seq @wc " "
+                !bell
+                !abort
+            !endif
+            1 forward-delete-char
+        !done
+        !goto nextline
+    !endif
+
+*finish
+    ml-write "Finished"
+    !return
+!emacro
+
+; Align all subsequent lines containing the character under the cursor to the
+; cursors position
+define-macro align-current-char
+    set-variable #l0 @wc
+    set-variable #l1 $window-acol
+    
+    align-char
+!emacro
+
+; Macro to delete the whitespace, or if on a word all of the word until the
+; next word is reached.
+0 define-macro super-delete
+    set-variable #l0 0
+    !while &not &sin @wc " \t\n"
+        forward-char
+        set-variable #l0 &add #l0 1
+    !done
+    !repeat
+        !force forward-char
+        !if $status
+            set-variable #l0 &add #l0 1
+        !endif
+    !until &or &seq @wc "" &not &sin @wc " \t\n"
+    #l0 backward-delete-char
+    !return
+!emacro
+
+; Macro to backspace the whitespace, or if on a word all of the word until the
+; previous word is reached.
+0 define-macro super-backspace
+    set-variable #l0 -1
+    set-variable #l1 0
+    !repeat
+        !force backward-char
+        !if $status
+            set-variable #l0 &add #l0 1
+            !if &sin @wc " \t\n"
+                set-variable #l1 1
+            !endif
+        !else
+            set-variable #l1 1
+        !endif
+    !until #l1
+    !repeat
+        !force backward-char
+        !if $status
+            set-variable #l0 &add #l0 1
+        !else
+            &add #l0 1 forward-delete-char
+            !return
+        !endif
+    !until &not &sin @wc " \t\n"
+    forward-char
+    #l0 forward-delete-char
+    !return
+!emacro
+
 define-macro spotless
     -1 clean
 !emacro
@@ -88,6 +194,8 @@ define-macro timer-status
     ml-write &spr "Elapsed time: %s" #l0
 !emacro
 
-global-bind-key alarm        "C-c a"
-global-bind-key timer-begin  "C-c b"
-global-bind-key timer-status "C-c s"
+global-bind-key    alarm           "C-c a"
+global-bind-key    timer-begin     "C-c b"
+global-bind-key    timer-status    "C-c s"
+global-bind-key    super-backspace "C-backspace"
+global-bind-key    super-delete    "C-delete"
