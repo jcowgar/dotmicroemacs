@@ -1,0 +1,6 @@
+if "if \p {\r\r}\P"
+elif "else if \p {\r\r}\P"
+for "for \p {\r\r}\P"
+func "func \p {\r\r}\P"
+switch "switch \p {\r\r}\P"
+type "type \p {\r\r}\P"
