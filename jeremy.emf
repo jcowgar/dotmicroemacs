@@ -131,6 +131,32 @@ define-macro spotless
     -1 clean
 !emacro
 
+define-macro autocomplete-word
+    ; remember position
+    set-alpha-mark "t"
+    set-mark
+    backward-word
+    exchange-point-and-mark
+    copy-region
+    ; copy clip to variable
+    set-variable #l0 @y
+    ; how many letters ?
+    set-variable #l1 &len #l0
+    ; empty clipboard
+    -1 yank
+    backward-word
+    ; search clip and extract rest of the word
+    search-backward #l0
+    #l1 forward-char
+    set-mark
+    forward-word
+    exchange-point-and-mark
+    copy-region
+    goto-alpha-mark "t"
+    yank
+    -1 yank
+!emacro
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
 ; Task Timer
@@ -194,10 +220,12 @@ define-macro timer-status
     ml-write &spr "Elapsed time: %s" #l0
 !emacro
 
-global-bind-key    alarm           "C-c a"
-global-bind-key    timer-begin     "C-c b"
-global-bind-key    timer-status    "C-c s"
-global-bind-key    super-backspace "C-backspace"
-global-bind-key    super-delete    "C-delete"
--1 global-bind-key next-buffer     "A-left"
-global-bind-key    next-buffer     "A-right"
+global-bind-key    alarm             "C-c a"
+global-bind-key    timer-begin       "C-c b"
+global-bind-key    timer-status      "C-c s"
+global-bind-key    super-backspace   "C-backspace"
+global-bind-key    super-delete      "C-delete"
+-1 global-bind-key next-buffer       "A-left"
+global-bind-key    next-buffer       "A-right"
+global-bind-key    autocomplete-word "C-."
+
