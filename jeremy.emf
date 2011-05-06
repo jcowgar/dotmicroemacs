@@ -157,6 +157,29 @@ define-macro autocomplete-word
     -1 yank
 !emacro
 
+; Go to the first non-blank character on the current line. If already there,
+; go to column 1
+define-macro smart-home
+    set-variable #l1 $window-acol
+    
+    beginning-of-line
+    
+    !repeat
+        !force forward-char
+        !if $status
+            !if &not &sin @wc " \t"
+                set-variable #l0 1
+            !endif
+        !else
+            set-variable #l0 1
+        !endif
+    !until #l0
+    
+    !if &equal $window-acol #l1
+        beginning-of-line
+    !end
+!emacro
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
 ; Task Timer
@@ -228,4 +251,4 @@ global-bind-key    super-delete      "C-delete"
 -1 global-bind-key next-buffer       "A-left"
 global-bind-key    next-buffer       "A-right"
 global-bind-key    autocomplete-word "C-."
-
+global-bind-key    smart-home        "home"
