@@ -1,7 +1,9 @@
 ; -!- emf -!-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
 ; Change the home directory on Windows and DOS.
+;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 !if &or &seq $platform "dos" &seq $platform "win32"
     set-variable $home "c:/Users/Jeremy"
@@ -242,6 +244,12 @@ define-macro timer-status
 
     ml-write &spr "Elapsed time: %s" #l0
 !emacro
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Key Bindings
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 global-bind-key    alarm              "C-c a"
 global-bind-key    timer-begin        "C-c b"
