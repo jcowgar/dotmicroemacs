@@ -2,12 +2,19 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
-; Change the home directory on Windows and DOS.
+; Miscelanneous Settings
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 !if &or &seq $platform "dos" &seq $platform "win32"
     set-variable $home "c:/Users/Jeremy"
 !endif
+
+set-variable $mode-line "%s%r%u%k %b %l:%c - %h:%m (%e) %f"
+set-variable $cursor-blink 250
+set-variable $file-ignore "~ ./ .8 .o .a .exe"
+set-variable $kept-version 10
+set-variable $tab-width 4
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
@@ -79,6 +86,19 @@ define-macro align-current-char
     set-variable #l1 $window-acol
 
     align-char
+!emacro
+
+; Pad to column #l0 with spaces
+define-macro pad-to-x
+    !while &less $window-acol #p0
+        insert-space
+    !done
+!emacro
+
+; Prompt the user for what column to pad to with spaces
+define-macro pad
+    set-variable #l0 @ml "To Column"
+    pad-to-x
 !emacro
 
 ; Macro to delete the whitespace, or if on a word all of the word until the
