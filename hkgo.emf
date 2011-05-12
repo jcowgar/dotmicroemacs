@@ -1,12 +1,13 @@
 ; -!- emf -!-
 ;
 ; Created:     2011-05-03
-; Modified:    2011-05-03
+; Modified:    2011-05-12
 ; Synopsis:    Go mode hook
 ; Authors:     Jeremy Cowgar
 ;
-; http://www.golang.org
-; http://jeremy.cowgar.com
+; http://www.jasspa.com - MicroEmacs
+; http://www.golang.org - Go
+; http://jeremy.cowgar.com - Jeremy's Blog
 ;
 
 define-macro fhook-go
@@ -33,12 +34,19 @@ set-variable .fhook-go.collapse-close "^}"
 set-variable .fhook-go.item-list-s1 "^\\s*\\(func\\|type\\)\\s+\\(.+\\)\\s+{"
 set-variable .fhook-go.item-list-r1 "\\1 \ecB\\2\ecA"
 
+; Setup Commands
+;set-variable .fhook-go.command-flag "|t|"
+;set-variable .fhook-go.command-name "|gofmt|"
+;set-variable .fhook-go.command-nbind "||"
+;set-variable .fhook-go.command-kbind "||"
+;set-variable .fhook-go.command-desc  "|Go Format|"
+
 !if &not &exist .hilight.go
     set-variable .hilight.go &pinc .hilight.next 1
 !endif
 
 !if &and &sin "h" .fhook-go.setup &band .hilight.flags 0x02
-    0 hilight .hilight.go 1 $global-scheme
+    0 hilight .hilight.go 2 50 $global-scheme
     
     hilight .hilight.go  2 "//"                    .scheme.comment
     hilight .hilight.go 20 "/\\*" "*/" ""          .scheme.comment
