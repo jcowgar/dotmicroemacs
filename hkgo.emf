@@ -98,20 +98,20 @@ set-variable .fhook-go.item-list-r1 "\\1 \ecB\\2\ecA"
     hilight .hilight.go  1 "uint32"                .scheme.type
     hilight .hilight.go  1 "uint64"                .scheme.type
     
-    ;hilight .hilight.go  1 "append"                .scheme.function
-    ;hilight .hilight.go  1 "cap"                   .scheme.function
-    ;hilight .hilight.go  1 "close"                 .scheme.function
-    ;hilight .hilight.go  1 "complex"               .scheme.function
-    ;hilight .hilight.go  1 "copy"                  .scheme.function
-    ;hilight .hilight.go  1 "imag"                  .scheme.function
-    ;hilight .hilight.go  1 "len"                   .scheme.function
-    ;hilight .hilight.go  1 "make"                  .scheme.function
-    ;hilight .hilight.go  1 "new"                   .scheme.function
-    ;hilight .hilight.go  1 "panic"                 .scheme.function
-    ;hilight .hilight.go  1 "print"                 .scheme.function
-    ;hilight .hilight.go  1 "println"               .scheme.function
-    ;hilight .hilight.go  1 "real"                  .scheme.function
-    ;hilight .hilight.go  1 "recover"               .scheme.function
+    hilight .hilight.go  1 "append"                .scheme.function
+    hilight .hilight.go  1 "cap"                   .scheme.function
+    hilight .hilight.go  1 "close"                 .scheme.function
+    hilight .hilight.go  1 "complex"               .scheme.function
+    hilight .hilight.go  1 "copy"                  .scheme.function
+    hilight .hilight.go  1 "imag"                  .scheme.function
+    hilight .hilight.go  1 "len"                   .scheme.function
+    hilight .hilight.go  1 "make"                  .scheme.function
+    hilight .hilight.go  1 "new"                   .scheme.function
+    hilight .hilight.go  1 "panic"                 .scheme.function
+    hilight .hilight.go  1 "print"                 .scheme.function
+    hilight .hilight.go  1 "println"               .scheme.function
+    hilight .hilight.go  1 "real"                  .scheme.function
+    hilight .hilight.go  1 "recover"               .scheme.function
     
     !if &band .hilight.flags 0x08
         ; hilight consts, e.g. numbers
@@ -139,5 +139,9 @@ set-variable .fhook-go.item-list-r1 "\\1 \ecB\\2\ecA"
     indent .hilight.go s "case[^:]+:" -t
     indent .hilight.go s "default[ \t]*:" -t
 !endif
+
+define-macro gofmt
+    filter-buffer "gofmt"
+!emacro
 
 buffer-init-fhook "go"
