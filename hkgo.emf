@@ -35,11 +35,11 @@ set-variable .fhook-go.item-list-s1 "^\\s*\\(func\\|type\\)\\s+\\(.+\\)\\s+{"
 set-variable .fhook-go.item-list-r1 "\\1 \ecB\\2\ecA"
 
 ; Setup Commands
-;set-variable .fhook-go.command-flag "|t|"
-;set-variable .fhook-go.command-name "|gofmt|"
-;set-variable .fhook-go.command-nbind "||"
-;set-variable .fhook-go.command-kbind "||"
-;set-variable .fhook-go.command-desc  "|Go Format|"
+set-variable .fhook-go.command-flag "|t|th|th|"
+set-variable .fhook-go.command-name "||gofmt|gomake|"
+set-variable .fhook-go.command-nbind "||||"
+set-variable .fhook-go.command-kbind "||||"
+set-variable .fhook-go.command-desc  "||Go \HFormat|Go \HMake|"
 
 !if &not &exist .hilight.go
     set-variable .hilight.go &pinc .hilight.next 1
@@ -150,6 +150,10 @@ set-variable .fhook-go.item-list-r1 "\\1 \ecB\\2\ecA"
 
 define-macro gofmt
     filter-buffer "gofmt"
+!emacro
+
+define-macro gomake
+    compile "gomake"
 !emacro
 
 buffer-init-fhook "go"
