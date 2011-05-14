@@ -22,7 +22,7 @@ define-macro fhook-go
 ; buffer-init variables
 set-variable .fhook-go.setup &reg "/history/fhook/go" "bdfghnopxlqv"
 set-variable .fhook-go.setup-mask "abdefghikmnoptuxclqrvy"
-set-variable .fhook-go.comment    "|/*| */|*| * | * |fr|"
+set-variable .fhook-go.comment    "|/*| */|*| * | * |f|"
 set-variable .fhook-go.comment-1  "|//||//|// | //|r|"
 set-variable .fhook-go.indent-width 4
 
@@ -137,7 +137,7 @@ set-variable .fhook-go.command-desc  "||Go \HFormat|Go \HMake|"
 
 !if &sin "d" .fhook-go.setup
     0 indent .hilight.go 0 100
-
+    
     indent .hilight.go n "{" t
     indent .hilight.go o "}" -t
     indent .hilight.go n "(" t
@@ -146,6 +146,14 @@ set-variable .fhook-go.command-desc  "||Go \HFormat|Go \HMake|"
     indent .hilight.go o "\\]" -t
     indent .hilight.go s "case[^:]+:" -t
     indent .hilight.go s "default[ \t]*:" -t
+    
+    indent .hilight.go n "/\\*" 1
+    indent .hilight.go n "\\*/" -1
+    
+    indent .hilight.go c "\\+$" t
+    indent .hilight.go c "-$" t
+    indent .hilight.go c "\\*$" t
+    indent .hilight.go c "/$" t
 !endif
 
 define-macro gofmt
