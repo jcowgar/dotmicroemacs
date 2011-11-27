@@ -14,7 +14,8 @@ set-variable $mode-line "%s%r%u%k %b %l:%c - %h:%m (%e) %f"
 set-variable $cursor-blink 250
 set-variable $file-ignore "~ ./ .8 .o .a .exe"
 set-variable $kept-version 10
-set-variable $tab-width 4
+set-variable $indent-width 4
+set-variable $tab-width 8
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
@@ -26,9 +27,59 @@ add-file-hook ".go" fhook-go
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;
+; Line handling
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+-1 global-mode "lf"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
 ; Helper Methods
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Complete what the two above lines have in common from the current cursor
+; position.
+;
+
+define-macro complete-similar
+    ; #l0 is the starting column
+    ; #l1 is 2 lines back
+    ; #l2 is 1 line back
+    ; #l3 is the current length (mid string is taken from #l0 to #l3)
+    ; #l4 is the maximum length we should attempt (shorter len of #l1 and #l2)
+
+    set-variable #l0 $window-acol
+
+    2 backward-line
+    set-variable #l1 @wl
+    forward-line
+    set-variable #l2 @wl
+    forward-line
+
+    set-variable #l4 &len #l1
+    !if &less &len #l2 #l4
+        set-variable #l4 &len #l2
+    !endif
+
+    set-variable #l3 1
+
+    !while &and &less &add #l0 &inc #l3 1 #l4 &sequal &mid #l1 #l0 #l3 &mid #l2 #l0 #l3
+        ; Loop while line 1 and line 2 strings are the same bound by #l0 and #l3
+        ; Each iteration #l3 is incremented by 1
+    !done
+
+    ; If we have reached the end of the string, do not deincrement by one which is
+    ; typically the failing condition from the above loop
+    !if &not &equal &add #l0 #l3 #l4
+        set-variable #l3 &sub #l3 1
+    !endif
+
+    insert-string &mid #l1 #l0 #l3
+!emacro
 
 ; Align all subsequent lines containing #l0 to column #l1
 define-macro align-char
@@ -157,13 +208,13 @@ define-macro spotless
 ; go to column 1
 define-macro smart-home
     set-variable #l0 $window-acol
-    
+
     beginning-of-line
-    
+
     !while &sin @wc " \t"
         !force forward-char
     !done
-    
+
     !if &equal $window-acol #l0
         beginning-of-line
     !end
@@ -172,9 +223,9 @@ define-macro smart-home
 ; Delete from the current position to the character give via the user prompt
 define-macro forward-delete-to
     ml-write "Delete to: "
-    
+
     set-variable #l0 @cgk
-    
+
     !if &seq #l0 "C-g"
         ml-write "Cancelled"
     !else
@@ -187,14 +238,14 @@ define-macro forward-delete-to
 ; Delete from the current position to the character given via the user prompt
 define-macro backward-delete-to
     ml-write "Backward delete to: "
-    
+
     set-variable #l0 @cgk
-    
+
     !if &seq #l0 "C-g"
         ml-write "Cancelled"
     !else
         backward-char
-    
+
         !while &not &seq @wc #l0
             forward-delete-char
             backward-char
@@ -281,3 +332,4 @@ global-bind-key    next-buffer        "A-right"
 global-bind-key    smart-home         "home"
 global-bind-key    forward-delete-to  "esc delete"
 global-bind-key    backward-delete-to "esc backspace"
+global-bind-key    complete-similar   "esc space"
